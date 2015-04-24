@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.0" orientation="orthogonal" renderorder="left-down" width="25" height="25" tilewidth="32" tileheight="32" nextobjectid="1">
+ <tileset firstgid="1" name="bigBlue" tilewidth="32" tileheight="32">
+  <image source="../../../TitleTest/res/bigBlue.png" width="800" height="480"/>
+ </tileset>
+ <layer name="Tile Layer 1" width="25" height="25">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAC3NiYGBwGga4jIqYHm4dKnbwo2Fy7CAUxtSyAx+fHnZQIz5oYQch/1KaPygJU1LTIC470OXIMZsYO3CpI8V8XHZQ03xi/EGp+bSMc1LTOC3toEW9Qkk+p8QfQ9UOYssgUtI2qXiw2gEA6pI9x8QJAAA=
+  </data>
+ </layer>
+ <layer name="path" width="25" height="25">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAC2NgGB6gjIqYHm4dSXZQEsak2EGOvlE7aJM/BlP6G7Vj1A5K7KBFvUJJPicWDCc76F1HDyUAANSmFFnECQAA
+  </data>
+ </layer>
+</map>
