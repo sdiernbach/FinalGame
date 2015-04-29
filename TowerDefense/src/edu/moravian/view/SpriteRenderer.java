@@ -1,7 +1,7 @@
 
 package edu.moravian.view;
 
-import edu.moravian.main.Game;
+import towerdefense.Game;
 import edu.moravian.math.CoordinateTranslator;
 import edu.moravian.model.Entity;
 import org.newdawn.slick.Graphics;
@@ -22,7 +22,7 @@ public class SpriteRenderer
         this.renderable = renderable;
     }
 
-    public void update(MapRenderer mapRenderer, Entity spriteEntity, boolean goUp, boolean goDown, boolean goLeft, boolean goRight)
+    public void update(MapRenderer mapRenderer, Entity spriteEntity)
     {
         if(mapRenderer.getMapX() > ct.getWorldWidth()*32 - ct.getScreenWidth())
         {
@@ -65,36 +65,14 @@ public class SpriteRenderer
         {
             drawY = spriteEntity.getEntityMY() - mapRenderer.getMapY();
         }
-        this.goUp = goUp;
-        this.goDown = goDown;
-        this.goLeft = goLeft;
-        this.goRight = goRight;
+       
     }
     
     public void render(Graphics grphcs)
     {
-        if(goUp)
-        {
-            grphcs.rotate(drawX+16, drawY+16, -180);
+       
             renderable.draw(drawX, drawY);
-            grphcs.rotate(drawX+16, drawY+16, 180);
-        }
-        else if(goLeft)
-        {
-            grphcs.rotate(drawX+16, drawY+16, 90);
-            renderable.draw(drawX, drawY);
-            grphcs.rotate(drawX+16, drawY+16, -90);
-        }
-        else if(goRight)
-        {
-            grphcs.rotate(drawX+16, drawY+16, -90);
-            renderable.draw(drawX, drawY);
-            grphcs.rotate(drawX+16, drawY+16, 90);
-        }
-        else
-        {
-            renderable.draw(drawX, drawY);
-        }
+        
     }
 
     

@@ -2,7 +2,11 @@
 package towerdefense;
 
 import edu.moravian.math.CoordinateTranslator;
+import edu.moravian.model.Berry;
+import edu.moravian.model.Enemy;
 import edu.moravian.view.MapRenderer;
+import edu.moravian.view.SpriteRenderer;
+import edu.moravian.model.Entity;
 import org.newdawn.slick.BasicGame;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
@@ -18,17 +22,18 @@ import org.newdawn.slick.tiled.TiledMap;
 public class Game extends BasicGame
 {
     private static Game instance;
+    private MapRenderer mapRenderer;
     
-    private final int WIDTH = 900;
-    private final int HEIGHT = 700;
+    private final int WIDTH = 800;
+    private final int HEIGHT = 800;
     
       
-    private Image orbs, miniMapImage,berry, house, agent, playerEntity;
+    private Image orbs, miniMapImage,berry, house, agent, enemyEntity;
     private TiledMap map;
     
-    //private SpriteRenderer playerRenderer, agentRenderer, agentRenderer1, agentRenderer2, orbRenderer, berryRenderer, houseRenderer;
-    private MapRenderer mapRenderer;
-    //private Entity player, treasureEntity, berryEntity, houseEntity; 
+    private SpriteRenderer enemyRenderer;
+    
+    private Entity enemy; 
     //private Enemy agentEntity, agentEntity1, agentEntity2;
    // private ArrayList<Enemy> agentArray;
     
@@ -60,32 +65,25 @@ public class Game extends BasicGame
     {  
        
         map = new TiledMap("res/towerPath.tmx");
-  
-
-
-        orbs = new Image("res/ball.png");
-        berry = new Image("res/berry.png");
-        house = new Image("res/home.png");
-        
-        
-        
-        
-        
-        
-        playerEntity = new Image("res/Cool.png");
-        
-        
-        //playerRenderer = new SpriteRenderer(playerEntity);
-          
-        agent = new Image("res/steve.png");
-        
-        
-        
-        
-        
-        
-        
+        ct = new CoordinateTranslator(map.getWidth(), map.getHeight(), WIDTH, HEIGHT, 0, 0);
         mapRenderer = new MapRenderer(map);
+        
+        enemy   = new Enemy();
+  
+//        orbs = new Image("res/ball.png");
+   //     berry = new Image("res/berry.png");
+     //   house = new Image("res/home.png");
+       
+        
+        enemyEntity = new Image("res/Cool.png");
+        
+        
+        enemyRenderer = new SpriteRenderer(enemyEntity);
+        
+          
+//        agent = new Image("res/steve.png");
+        
+        
         orbPoints = 0;
         enemyPoints = 0;
         
@@ -104,15 +102,16 @@ public class Game extends BasicGame
         Input input = gc.getInput();
        
                
-        
+        mapRenderer = new MapRenderer(map);
         mapRenderer.update(x, y);
         x = mapRenderer.getX();
         y = mapRenderer.getY();
         
     
-        
+        enemy.update();
         
         //Updating coordinates for rendering
+        enemyRenderer.update(mapRenderer, enemy);
         
 
         
@@ -131,12 +130,14 @@ public class Game extends BasicGame
     {
         
         //Map
+        
         mapRenderer.render();
+       
         
         //pointCount
         
         //Entities
-        
+         enemyRenderer.render(grphcs);
      
         //exit
         
