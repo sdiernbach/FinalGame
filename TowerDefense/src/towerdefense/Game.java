@@ -3,7 +3,13 @@ package towerdefense;
 
 import Factory.SimpleFactory;
 import Factory.enemyFactory;
+import edu.moravian.math.AStar.AStar;
+import edu.moravian.math.AStar.AreaMap;
+import edu.moravian.math.AStar.Path;
 import edu.moravian.math.CoordinateTranslator;
+import edu.moravian.math.PathFinder;
+import edu.moravian.math.heuristic.AStarHeuristic;
+import edu.moravian.math.heuristic.ClosestHeuristic;
 import edu.moravian.model.Berry;
 import edu.moravian.model.Enemy;
 import edu.moravian.view.MapRenderer;
@@ -39,8 +45,13 @@ public class Game extends BasicGame
     //private Enemy agentEntity, agentEntity1, agentEntity2;
    // private ArrayList<Enemy> agentArray;
     
-   
-   
+    private PathFinder pf;
+    private Path p;
+    AStarHeuristic heur = new ClosestHeuristic();
+    AStar astar;
+    private int dumb [][];
+    private AreaMap myMap;
+    
     
     private double x, y;
     private int delta;
@@ -52,12 +63,13 @@ public class Game extends BasicGame
     private boolean Win, Lose;
     private boolean agentGoUp, agentGoDown, agentGoLeft, agentGoRight;
     
-    private Game(String title)
+    private Game(String title) throws SlickException
     {
         super(title);
+      
     }
     
-    public static Game getInstance()
+    public static Game getInstance() throws SlickException
     {
         if(instance == null)
             instance = new Game("TowerDefense");
@@ -67,7 +79,7 @@ public class Game extends BasicGame
     @Override
     public void init(GameContainer gc) throws SlickException 
     {  
-       
+       this.pf = new PathFinder();
         map = new TiledMap("res/towerPath.tmx");
         ct = new CoordinateTranslator(map.getWidth(), map.getHeight(), WIDTH, HEIGHT, 0, 0);
         mapRenderer = new MapRenderer(map);
@@ -78,6 +90,20 @@ public class Game extends BasicGame
    //     berry = new Image("res/berry.png");
      //   house = new Image("res/home.png");
        
+        dumb = new int [map.getWidth()][map.getHeight()];
+        for (int r=0; r<map.getHeight(); r++) {
+              for (int c=0; c<map.getWidth(); c++)
+              {
+                  if(map.getTileId(r, c, 1)==118)
+                      dumb[c][r]= 1;
+              }
+        }
+        
+        
+        myMap = new AreaMap(map.getHeight(),map.getWidth(), dumb);
+        astar = new AStar(myMap,heur);
+        astar.printPath();
+        
         
         enemyEntity = new Image("res/Cool.png");
         enemyRenderer = new SpriteRenderer(enemyEntity);

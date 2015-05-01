@@ -20,24 +20,25 @@ public class PathFinder {
    
     public PathFinder() throws SlickException
     {
-        map = new TiledMap("res/Map2.tmx");
+        map = new TiledMap("res/towerPath.tmx");
         dumb = new int [map.getWidth()][map.getHeight()];
-        /*for (int r=0; r<map.getHeight(); r++) {
+        for (int r=0; r<map.getHeight(); r++) {
               for (int c=0; c<map.getWidth(); c++)
               {
-                  if(map.getTileId(r, c, 1)==11)
+                  if(map.getTileId(r, c, 1)==118)
                       dumb[r][c]= 1;
               }
-        }*/
+        }
     }
     public void generatePath(Point2D from, Point2D to)
     {
         System.out.println("tiledId "+map.getTileId(7, 5, 1));
-        System.out.println("layerIndex "+map.getLayerIndex("object"));
+        System.out.println("playerIndex "+map.getLayerIndex("object"));
         myMap = new AreaMap(map.getHeight(),map.getWidth(), dumb);
         astar = new AStar(myMap,heur);
         p=astar.calcShortestPath(from.getX(),from.getY(), to.getX(), to.getY());
         astar.printPath();
+        
     }
     
     public Path getPath()

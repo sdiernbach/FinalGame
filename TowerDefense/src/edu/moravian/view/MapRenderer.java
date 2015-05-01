@@ -3,6 +3,7 @@ package edu.moravian.view;
 import towerdefense.Game;
 import edu.moravian.math.CoordinateTranslator;
 import java.awt.Point;
+import org.newdawn.slick.SlickException;
 import org.newdawn.slick.tiled.TiledMap;
 
 
@@ -13,7 +14,7 @@ public class MapRenderer
     private final CoordinateTranslator ct;
     private final TiledMap map;
 
-    public MapRenderer(TiledMap map)
+    public MapRenderer(TiledMap map) throws SlickException
     {
         ct = Game.getInstance().getCT();
         this. map = map;
