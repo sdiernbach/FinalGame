@@ -1,6 +1,8 @@
 
 package towerdefense;
 
+import Factory.SimpleFactory;
+import Factory.enemyFactory;
 import edu.moravian.math.CoordinateTranslator;
 import edu.moravian.model.Berry;
 import edu.moravian.model.Enemy;
@@ -28,7 +30,7 @@ public class Game extends BasicGame
     private final int HEIGHT = 800;
     
       
-    private Image orbs, miniMapImage,berry, house, agent, enemyEntity;
+    private Image enemyEntity;
     private TiledMap map;
     
     private SpriteRenderer enemyRenderer;
@@ -37,15 +39,17 @@ public class Game extends BasicGame
     //private Enemy agentEntity, agentEntity1, agentEntity2;
    // private ArrayList<Enemy> agentArray;
     
-    //private Sound orbSound, music;
+   
    
     
     private double x, y;
-    private int delta, orbPoints, enemyPoints;
+    private int delta;
+    public int healthPoints;
     private CoordinateTranslator ct;
+    private SimpleFactory factory;
     
     private boolean exit, log, goRightKey, goLeftKey, goUpKey, goDownKey;
-    private boolean Win, Lose, Locator, newMap;
+    private boolean Win, Lose;
     private boolean agentGoUp, agentGoDown, agentGoLeft, agentGoRight;
     
     private Game(String title)
@@ -67,8 +71,8 @@ public class Game extends BasicGame
         map = new TiledMap("res/towerPath.tmx");
         ct = new CoordinateTranslator(map.getWidth(), map.getHeight(), WIDTH, HEIGHT, 0, 0);
         mapRenderer = new MapRenderer(map);
-        
-        enemy   = new Enemy();
+        factory = new SimpleFactory(100);
+        factory.getClanMembers();
   
 //        orbs = new Image("res/ball.png");
    //     berry = new Image("res/berry.png");
@@ -76,16 +80,12 @@ public class Game extends BasicGame
        
         
         enemyEntity = new Image("res/Cool.png");
-        
-        
         enemyRenderer = new SpriteRenderer(enemyEntity);
-        
-          
 //        agent = new Image("res/steve.png");
         
         
-        orbPoints = 0;
-        enemyPoints = 0;
+        healthPoints = 100;
+        
         
         x = 0;
         y = 0;
@@ -107,21 +107,27 @@ public class Game extends BasicGame
         x = mapRenderer.getX();
         y = mapRenderer.getY();
         
-    
-        enemy.update();
+        //Enemies in array
+       for(int i=0; i<factory.arraySize();i++)
+            factory.getEnemyAt(i).update();
+         
+        
         
         //Updating coordinates for rendering
-        enemyRenderer.update(mapRenderer, enemy);
+        for(int i=0; i<factory.arraySize();i++)
+            enemyRenderer.update(factory.getEnemyAt(i));
         
-
-        
-        
-        
-        
-       
-       
+        //Quits game in a button
         if(gc.getInput().isKeyPressed(Input.KEY_Q))
            gc.exit();
+        
+        //Lose the game when health hits zero
+        if(healthPoints==0)
+       {
+           Lose=true;
+       
+           gc.pause();
+       }
 
     }
 
@@ -133,13 +139,19 @@ public class Game extends BasicGame
         
         mapRenderer.render();
        
-        
         //pointCount
         
         //Entities
          enemyRenderer.render(grphcs);
      
+         grphcs.drawString("Health Points: "+ healthPoints, 300, 50);
+         
         //exit
+         if(Lose==true)
+        {
+            grphcs.clear();
+            grphcs.drawString("You LOSE", 400, 300);
+        }
         
         }
    
@@ -174,14 +186,9 @@ public class Game extends BasicGame
         return map.getHeight();
     }
     
-    public int getWinCount()
+    public int getHealthCount()
     {
-        return orbPoints;
-    }
-    
-    public int getLoseCount()
-    {
-        return enemyPoints;
+        return healthPoints;
     }
     
     
@@ -195,5 +202,9 @@ public class Game extends BasicGame
         return ct;
     }
     
+    public Entity getEnemyEntity()
+    {
+        return enemy;
+    }
     
 }
