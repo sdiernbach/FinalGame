@@ -48,7 +48,7 @@ public class AStar {
                 this.goalY = goalY;
 
                 //mark start and goal node
-                map.setStartLocation((int)startX, (int)startY);
+                map.setTowerLocation((int)startX, (int)startY);
                 map.setGoalLocation((int)goalX, (int)goalY);
 
                 //Check if the goal node is blocked (if it is, it is impossible to find a path there)

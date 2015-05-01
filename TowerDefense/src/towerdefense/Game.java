@@ -5,12 +5,13 @@ import Factory.SimpleFactory;
 import Factory.enemyFactory;
 import edu.moravian.math.AStar.AStar;
 import edu.moravian.math.AStar.AreaMap;
+import edu.moravian.math.AStar.Node;
 import edu.moravian.math.AStar.Path;
 import edu.moravian.math.CoordinateTranslator;
 import edu.moravian.math.PathFinder;
 import edu.moravian.math.heuristic.AStarHeuristic;
 import edu.moravian.math.heuristic.ClosestHeuristic;
-import edu.moravian.model.Berry;
+import edu.moravian.model.Tower;
 import edu.moravian.model.Enemy;
 import edu.moravian.view.MapRenderer;
 import edu.moravian.view.SpriteRenderer;
@@ -36,12 +37,12 @@ public class Game extends BasicGame
     private final int HEIGHT = 800;
     
       
-    private Image enemyEntity;
+    private Image enemyEntity, towerEntity;
     private TiledMap map;
     
-    private SpriteRenderer enemyRenderer;
+    private SpriteRenderer enemyRenderer, towerRenderer;
     
-    private Entity enemy; 
+    private Entity enemy, tower; 
     //private Enemy agentEntity, agentEntity1, agentEntity2;
    // private ArrayList<Enemy> agentArray;
     
@@ -49,7 +50,7 @@ public class Game extends BasicGame
     private Path p;
     AStarHeuristic heur = new ClosestHeuristic();
     AStar astar;
-    private int dumb [][];
+    private int Dmap [][];
     private AreaMap myMap;
     
     
@@ -90,24 +91,25 @@ public class Game extends BasicGame
    //     berry = new Image("res/berry.png");
      //   house = new Image("res/home.png");
        
-        dumb = new int [map.getWidth()][map.getHeight()];
+        Dmap = new int [map.getWidth()][map.getHeight()];
         for (int r=0; r<map.getHeight(); r++) {
               for (int c=0; c<map.getWidth(); c++)
               {
                   if(map.getTileId(r, c, 1)==118)
-                      dumb[c][r]= 1;
+                      Dmap[r][c]= 1;
               }
         }
         
         
-        myMap = new AreaMap(map.getHeight(),map.getWidth(), dumb);
+        myMap = new AreaMap(map.getHeight(),map.getWidth(), Dmap);
         astar = new AStar(myMap,heur);
         astar.printPath();
         
         
         enemyEntity = new Image("res/Cool.png");
         enemyRenderer = new SpriteRenderer(enemyEntity);
-//        agent = new Image("res/steve.png");
+        towerEntity = new Image("res/steve.png");
+        towerRenderer = new SpriteRenderer(towerEntity);
         
         
         healthPoints = 100;
@@ -118,6 +120,27 @@ public class Game extends BasicGame
         
        
         exit = false;
+    }
+    
+    @Override
+    public void mousePressed(int button, int x, int y)
+    {
+        x=x/32;
+        y=y/32;
+        if(Dmap[x][y]==0)
+        {
+            myMap.setTowerLocation(x, y);
+            Dmap[x][y]=2;
+            astar.printPath();
+            
+        }
+        else if(Dmap[x][y]==2)
+        {
+            myMap.removeTowerLocation(x, y);
+            Dmap[x][y]=0;
+            astar.printPath();
+        }
+       
     }
 
     @Override
@@ -133,27 +156,39 @@ public class Game extends BasicGame
         x = mapRenderer.getX();
         y = mapRenderer.getY();
         
+        //for tower no update needed yet
+        
+        for (int r=0; r<map.getHeight(); r++) {
+              for (int c=0; c<map.getWidth(); c++)
+              {
+                  if(Dmap[r][c]== 2)
+                  {
+                      tower.update();
+                      towerRenderer.update(tower);
+                  }
+              }
+        }
+        
         //Enemies in array
        for(int i=0; i<factory.arraySize();i++)
             factory.getEnemyAt(i).update();
-         
-        
         
         //Updating coordinates for rendering
-        for(int i=0; i<factory.arraySize();i++)
-            enemyRenderer.update(factory.getEnemyAt(i));
+       for(int i=0; i<factory.arraySize();i++)
+           enemyRenderer.update(factory.getEnemyAt(i));
         
         //Quits game in a button
-        if(gc.getInput().isKeyPressed(Input.KEY_Q))
-           gc.exit();
+       if(gc.getInput().isKeyPressed(Input.KEY_Q))
+          gc.exit();
         
         //Lose the game when health hits zero
-        if(healthPoints==0)
+       if(healthPoints==0)
        {
            Lose=true;
        
            gc.pause();
        }
+        
 
     }
 
@@ -169,6 +204,7 @@ public class Game extends BasicGame
         
         //Entities
          enemyRenderer.render(grphcs);
+         
      
          grphcs.drawString("Health Points: "+ healthPoints, 300, 50);
          
@@ -178,8 +214,17 @@ public class Game extends BasicGame
             grphcs.clear();
             grphcs.drawString("You LOSE", 400, 300);
         }
-        
+         
+        for (int r=0; r<map.getHeight(); r++) {
+              for (int c=0; c<map.getWidth(); c++)
+              {
+                  if(Dmap[r][c]== 0)
+                      grphcs.drawOval(r*32, c*32, 32, 32);
+                  if(Dmap[r][c]== 0)
+                      towerRenderer.render(grphcs);
+              }
         }
+    }
    
     
     public double getX()

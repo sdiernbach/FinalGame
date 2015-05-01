@@ -84,11 +84,17 @@ public class AreaMap {
                 return map.get(x).get(y);
         }
 
-        public void setStartLocation(int x, int y) {
-                map.get(startLocationX).get(startLocationY).setStart(false);
+        public void setTowerLocation(int x, int y) {
+                
                 map.get(x).get(y).setStart(true);
                 startLocationX = x;
                 startLocationY = y;
+        }
+        
+        public void removeTowerLocation(int x, int y) {
+                
+                map.get(x).get(y).setStart(false);
+           
         }
 
         public void setGoalLocation(int x, int y) {
