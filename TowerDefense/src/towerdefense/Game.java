@@ -43,8 +43,8 @@ public class Game extends BasicGame
     private SpriteRenderer enemyRenderer, towerRenderer;
     
     private Entity enemy, tower; 
-    //private Enemy agentEntity, agentEntity1, agentEntity2;
-   // private ArrayList<Enemy> agentArray;
+   
+  
     
     private PathFinder pf;
     private Path p;
@@ -55,7 +55,7 @@ public class Game extends BasicGame
     
     
     private double x, y;
-    private int delta;
+    private int delta, enemyLength;
     public int healthPoints;
     private CoordinateTranslator ct;
     private SimpleFactory factory;
@@ -85,7 +85,10 @@ public class Game extends BasicGame
         ct = new CoordinateTranslator(map.getWidth(), map.getHeight(), WIDTH, HEIGHT, 0, 0);
         mapRenderer = new MapRenderer(map);
         factory = new SimpleFactory(100);
-        factory.getClanMembers();
+        factory.getEnemies();
+        factory.getEnemyRenderer();
+        tower = new Tower();
+        enemyLength=0;
   
 //        orbs = new Image("res/ball.png");
    //     berry = new Image("res/berry.png");
@@ -106,13 +109,14 @@ public class Game extends BasicGame
         astar.printPath();
         
         
-        enemyEntity = new Image("res/Cool.png");
-        enemyRenderer = new SpriteRenderer(enemyEntity);
+       // enemyEntity = new Image("res/Cool.png");
+        //factory.getEnemyRenderAt(0) = new SpriteRender(enemyEntity);
+        //enemyRenderer = new SpriteRenderer(enemyEntity);
         towerEntity = new Image("res/steve.png");
         towerRenderer = new SpriteRenderer(towerEntity);
         
         
-        healthPoints = 100;
+        healthPoints = 99;
         
         
         x = 0;
@@ -158,25 +162,27 @@ public class Game extends BasicGame
         
         //for tower no update needed yet
         
-        for (int r=0; r<map.getHeight(); r++) {
-              for (int c=0; c<map.getWidth(); c++)
-              {
-                  if(Dmap[r][c]== 2)
-                  {
-                      tower.update();
-                      towerRenderer.update(tower);
-                  }
-              }
-        }
+        tower.update();
+        towerRenderer.update(tower);
+
         
         //Enemies in array
-       for(int i=0; i<factory.arraySize();i++)
-            factory.getEnemyAt(i).update();
+       for(int i=0; i<=factory.arraySize();i++)
+       {
+           if(Game.getInstance().getDelta()%100!=1)
+            factory.getEnemyAt(enemyLength).update();
+       //}
+       
         
         //Updating coordinates for rendering
-       for(int i=0; i<factory.arraySize();i++)
-           enemyRenderer.update(factory.getEnemyAt(i));
-        
+       //for(int i=0; i<factory.arraySize();i++)
+       //{
+           factory.getEnemyRenderAt(enemyLength).update(factory.getEnemyAt(enemyLength));//enemyRenderer.update(factory.getEnemyAt(enemyLength));
+      }
+       if(enemyLength==99)
+           enemyLength=0;
+       enemyLength++;
+       
         //Quits game in a button
        if(gc.getInput().isKeyPressed(Input.KEY_Q))
           gc.exit();
@@ -203,26 +209,30 @@ public class Game extends BasicGame
         //pointCount
         
         //Entities
-         enemyRenderer.render(grphcs);
+       
+        //enemyRenderer.render(grphcs);
+        for(int i=0;i<factory.arraySize();i++)
+            factory.getEnemyRenderAt(i).render(grphcs);
+        
+         //towerRenderer.render(grphcs);
          
      
-         grphcs.drawString("Health Points: "+ healthPoints, 300, 50);
+        grphcs.drawString("Health Points: "+ healthPoints, 300, 50);
          
         //exit
-         if(Lose==true)
-        {
-            grphcs.clear();
-            grphcs.drawString("You LOSE", 400, 300);
-        }
+       
          
         for (int r=0; r<map.getHeight(); r++) {
               for (int c=0; c<map.getWidth(); c++)
               {
-                  if(Dmap[r][c]== 0)
-                      grphcs.drawOval(r*32, c*32, 32, 32);
-                  if(Dmap[r][c]== 0)
-                      towerRenderer.render(grphcs);
+                  if(Dmap[r][c]== 2)
+                      towerEntity.draw(r*32, c*32,200,200);
               }
+        }
+          if(Lose==true)
+        {
+            grphcs.clear();
+            grphcs.drawString("You LOSE", 400, 400);
         }
     }
    
@@ -278,4 +288,13 @@ public class Game extends BasicGame
         return enemy;
     }
     
+    public AreaMap getMap()
+    {
+            return myMap;
+    }
+    
+    public int[][] getTower()
+    {
+        return Dmap;
+    }
 }

@@ -4,6 +4,8 @@ package edu.moravian.math.AStar;
 import java.util.ArrayList;
 
 import edu.moravian.math.AStar.utils.Logger;
+import edu.moravian.model.TowerList;
+import towerdefense.Game;
 
 public class AreaMap {
 
@@ -15,6 +17,7 @@ public class AreaMap {
         private int goalLocationX = 0;
         private int goalLocationY = 0;
         private int[][] obstacleMap;
+        private TowerList towerList;
 
         private Logger log = new Logger();
         
@@ -87,6 +90,7 @@ public class AreaMap {
         public void setTowerLocation(int x, int y) {
                 
                 map.get(x).get(y).setStart(true);
+//                towerList.addTower();
                 startLocationX = x;
                 startLocationY = y;
         }
