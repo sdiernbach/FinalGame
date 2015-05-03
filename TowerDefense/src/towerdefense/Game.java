@@ -116,7 +116,7 @@ public class Game extends BasicGame
         towerRenderer = new SpriteRenderer(towerEntity);
         
         
-        healthPoints = 99;
+        healthPoints = 100;
         
         
         x = 0;
@@ -169,18 +169,24 @@ public class Game extends BasicGame
         //Enemies in array
        for(int i=0; i<=factory.arraySize();i++)
        {
-           if(Game.getInstance().getDelta()%100!=1)
-            factory.getEnemyAt(enemyLength).update();
+           if (enemyLength == factory.arraySize())
+               enemyLength = 0;
+          
+
+           if (Game.getInstance().getDelta() % 100 != 1) {
+               factory.getEnemyAt(0).update();
+               factory.getEnemyAt(1).update();
+           }
        //}
        
         
         //Updating coordinates for rendering
        //for(int i=0; i<factory.arraySize();i++)
        //{
-           factory.getEnemyRenderAt(enemyLength).update(factory.getEnemyAt(enemyLength));//enemyRenderer.update(factory.getEnemyAt(enemyLength));
+           factory.getEnemyRenderAt(0).update(factory.getEnemyAt(0));//enemyRenderer.update(factory.getEnemyAt(enemyLength));
+           factory.getEnemyRenderAt(1).update(factory.getEnemyAt(1));
       }
-       if(enemyLength==99)
-           enemyLength=0;
+       
        enemyLength++;
        
         //Quits game in a button
@@ -211,8 +217,9 @@ public class Game extends BasicGame
         //Entities
        
         //enemyRenderer.render(grphcs);
-        for(int i=0;i<factory.arraySize();i++)
-            factory.getEnemyRenderAt(i).render(grphcs);
+        //for(int i=0;i<factory.arraySize();i++)
+            factory.getEnemyRenderAt(0).render(grphcs);
+            factory.getEnemyRenderAt(1).render(grphcs);
         
          //towerRenderer.render(grphcs);
          
