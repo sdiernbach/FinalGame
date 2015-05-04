@@ -55,7 +55,7 @@ public class Game extends BasicGame
     
     
     private double x, y;
-    private int delta, enemyLength;
+    private int delta, enemyLength, spawnTime, timeSinceLastSpawn;
     public int healthPoints;
     private CoordinateTranslator ct;
     private SimpleFactory factory;
@@ -88,7 +88,11 @@ public class Game extends BasicGame
         factory.getEnemies();
         factory.getEnemyRenderer();
         tower = new Tower();
+        enemyEntity = new Image("res/Cool.png");
+        enemyRenderer = new SpriteRenderer(enemyEntity);
         enemyLength=0;
+        spawnTime=5;
+        timeSinceLastSpawn=0;
   
 //        orbs = new Image("res/ball.png");
    //     berry = new Image("res/berry.png");
@@ -167,25 +171,23 @@ public class Game extends BasicGame
 
         
         //Enemies in array
-       for(int i=0; i<=factory.arraySize();i++)
-       {
+       //for(int i=0; i<=factory.arraySize();i++)
+      // {
            if (enemyLength == factory.arraySize())
                enemyLength = 0;
           
 
-           if (Game.getInstance().getDelta() % 100 != 1) {
-               factory.getEnemyAt(0).update();
-               factory.getEnemyAt(1).update();
+           if (timeSinceLastSpawn>spawnTime) {
+               factory.getEnemyAt(enemyLength).update();
+               timeSinceLastSpawn=0; 
            }
+           else
+               timeSinceLastSpawn+=delta;
+           factory.getEnemyRenderAt(enemyLength).update(factory.getEnemyAt(enemyLength));
        //}
        
         
-        //Updating coordinates for rendering
-       //for(int i=0; i<factory.arraySize();i++)
-       //{
-           factory.getEnemyRenderAt(0).update(factory.getEnemyAt(0));//enemyRenderer.update(factory.getEnemyAt(enemyLength));
-           factory.getEnemyRenderAt(1).update(factory.getEnemyAt(1));
-      }
+        
        
        enemyLength++;
        
@@ -217,9 +219,9 @@ public class Game extends BasicGame
         //Entities
        
         //enemyRenderer.render(grphcs);
-        //for(int i=0;i<factory.arraySize();i++)
-            factory.getEnemyRenderAt(0).render(grphcs);
-            factory.getEnemyRenderAt(1).render(grphcs);
+        for(int i=0;i<factory.arraySize();i++)
+            enemyEntity.draw(factory.getEnemyAt(i).getEntityMX(), factory.getEnemyAt(i).getEntityMY());
+            
         
          //towerRenderer.render(grphcs);
          

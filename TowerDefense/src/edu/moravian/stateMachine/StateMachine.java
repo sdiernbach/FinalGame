@@ -1,16 +1,17 @@
 
 package edu.moravian.stateMachine;
-import edu.moravian.model.Enemy;
+import edu.moravian.model.Bullet;
+
 
 
 public class StateMachine 
 {
-    private final Enemy agentEntity;
+    private final Bullet bulletEntity;
     private AgentState currentState, previousState, globalState;
     
-    public StateMachine(Enemy agentEntity)
+    public StateMachine(Bullet bulletEntity)
     {
-        this.agentEntity = agentEntity;
+        this.bulletEntity = bulletEntity;
     }
     
     public void setCurrentState(AgentState state)
@@ -29,9 +30,9 @@ public class StateMachine
     public void update()
     {
         if(globalState!=null)
-            globalState.Execute(agentEntity);
+            globalState.Execute(bulletEntity);
         if(currentState!=null)
-            currentState.Execute(agentEntity);
+            currentState.Execute(bulletEntity);
     }
     
     public void changeState(AgentState newState)

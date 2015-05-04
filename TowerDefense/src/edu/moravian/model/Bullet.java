@@ -30,4 +30,13 @@ public class Bullet extends Entity {
         currentState = newState;
     }
     
+    public void setEntityWX(double entityWX)
+    {
+        this.entityWX = entityWX;
+    }
+    
+    public void setEntityWY(double entityWY)
+    {
+        this.entityWY = entityWY;
+    }
 }

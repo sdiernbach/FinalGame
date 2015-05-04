@@ -25,7 +25,7 @@ public class SimpleFactory extends enemyFactory{
        
     @Override
     public Collection<Enemy> getEnemies() {
-    while (enemyMembers.size()<2)
+    while (enemyMembers.size()<10)
         try {
             enemyMembers.add(new Enemy(hitPoints));
         } catch (SlickException ex) {
@@ -45,7 +45,7 @@ public class SimpleFactory extends enemyFactory{
     }
     
     public Enemy getEnemyAt(int index) {
-    return enemyMembers.get(index);
+        return enemyMembers.get(index);
   }
     public SpriteRenderer getEnemyRenderAt(int index)
     {

@@ -32,43 +32,32 @@ public class FireAndChase implements AgentState
     }
 
     @Override
-    public void Execute(Enemy agentEntity) 
+    public void Execute(Bullet bulletEntity) 
     {
-        this.agentEntity = agentEntity;
-       
+        this.bulletEntity = bulletEntity;
         d = new Distance();
-        if(d.Distance(agentEntity.getEntityMap(), bulletEntity.getEntityMap())<5)
+        if(d.Distance(bulletEntity.getEntityMap(), agentEntity.getEntityMap())<5)
         {
-            this.performAction(agentEntity);
+            this.performAction(bulletEntity);
             
         }
-        else if(health == 0 && energy == 0 || energy != 0)
-            try {
-                agentEntity.changeState(GetFood.getInstance());
-        } catch (SlickException ex) {
-            Logger.getLogger(GoAndChase.class.getName()).log(Level.SEVERE, null, ex);
-        }
         
-        else if (health == 0 && energy == 0 || energy == 0)
-        {
-            agentEntity.changeState(Sleep.getInstance());
-        }
         
-        else if (d.Distance(agentEntity.getEntityMap(), playerEntity.getEntityMap())>5)
-            try {
-                agentEntity.changeState(Wander.getInstance());
-        } catch (SlickException ex) {
-            Logger.getLogger(GoAndChase.class.getName()).log(Level.SEVERE, null, ex);
+        else if (d.Distance(bulletEntity.getEntityMap(), agentEntity.getEntityMap())>5)
+            
+                bulletEntity.changeState(Loaded.getInstance());
+        
         }
-            }
+
+   
 
     @Override
-    public void performAction(Enemy agentEntity) 
+    public void performAction(Bullet bulletEntity) 
     {
-        int playerMX = playerEntity.getEntityMX();
-        int playerMY = playerEntity.getEntityMY();
-        int agentMX = agentEntity.getEntityMX();
-        int agentMY = agentEntity.getEntityMY();
+        int agentMX = bulletEntity.getEntityMX();
+        int agentMY = bulletEntity.getEntityMY();
+        int playerMX = agentEntity.getEntityMX();
+        int playerMY = agentEntity.getEntityMY();
         int delta = Game.getInstance().getDelta();
         if(playerMX != agentMX)
         {
@@ -94,7 +83,7 @@ public class FireAndChase implements AgentState
                         agentWX = Game.getInstance().getWorldWidth()*32*Game.getInstance().getWorldWidth()/Game.getInstance().getScreenWidth();
                 }
             }
-            agentEntity.setEntityWX(agentWX);
+            bulletEntity.setEntityWX(agentWX);
         }
         if(playerMY != agentMY)
         {
@@ -120,7 +109,7 @@ public class FireAndChase implements AgentState
                         agentWX = Game.getInstance().getWorldHeight()*32*Game.getInstance().getWorldHeight()/Game.getInstance().getScreenHeight();
                 }
             }
-            agentEntity.setEntityWY(agentWY);
+            bulletEntity.setEntityWY(agentWY);
         }
     }
 }

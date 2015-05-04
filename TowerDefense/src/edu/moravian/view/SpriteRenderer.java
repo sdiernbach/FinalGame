@@ -34,6 +34,7 @@ public class SpriteRenderer
     {
        
             renderable.draw(drawX, drawY);
+            
         
     }
 

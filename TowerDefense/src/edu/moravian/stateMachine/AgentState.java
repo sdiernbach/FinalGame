@@ -1,11 +1,12 @@
 
 package edu.moravian.stateMachine;
 
-import edu.moravian.model.Enemy;
+import edu.moravian.model.Bullet;
+
 
 
 public interface AgentState 
 {   
-    public void Execute(Enemy agentEntity);
-    public void performAction(Enemy agentEntity);
+    public void Execute(Bullet bulletEntity);
+    public void performAction(Bullet bulletEntity);
 }

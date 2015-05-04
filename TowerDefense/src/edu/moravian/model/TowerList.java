@@ -21,10 +21,9 @@ public class TowerList {
         towerMembers.remove(0);
     }
     
-    public Collection<Tower> getClanMembers()
+    public  Collection <Tower> getTowerMembers()
     {
-        while (towerMembers.size() < 100) {
-
-        }
+        
+        return towerMembers;
     }
 }
