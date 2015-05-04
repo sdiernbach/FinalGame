@@ -1,6 +1,7 @@
 
 package edu.moravian.model;
 
+import edu.moravian.math.Point2D;
 import java.awt.Point;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -44,5 +45,15 @@ public class Tower {
     public void reset() {
        
     }
+    
+     public int getEntityMX() {
+        return entityMX;
+    }
+
+    public int getEntityMY() {
+        return entityMY;
+    }
+
+    
     
 }

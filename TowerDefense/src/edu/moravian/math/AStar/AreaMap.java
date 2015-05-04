@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import edu.moravian.math.AStar.utils.Logger;
 import edu.moravian.model.Tower;
 import edu.moravian.model.TowerList;
+import org.newdawn.slick.SlickException;
 import towerdefense.Game;
 
 public class AreaMap {
@@ -88,18 +89,23 @@ public class AreaMap {
                 return map.get(x).get(y);
         }
 
-        public void setTowerLocation(int x, int y) {
-                Tower tower = null;
+        public void setTowerLocation(int x, int y) throws SlickException {
+                Tower tower;
+                tower = new Tower(x,y);
                 map.get(x).get(y).setStart(true);
+                
+                if (towerList==null)
+                    towerList= new TowerList();
             
-                towerList.addTower(tower = new Tower(x,y));
+                towerList.addTower(tower);
                 startLocationX = x;
                 startLocationY = y;
         }
         
         public void removeTowerLocation(int x, int y) {
-                Tower tower = null;
-                towerList.removeTower(tower = new Tower(x,y));
+                Tower tower;
+                tower = new Tower(x,y);
+                towerList.removeTower(tower);
                 map.get(x).get(y).setStart(false);
            
         }

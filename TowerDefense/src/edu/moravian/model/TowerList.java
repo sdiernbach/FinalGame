@@ -2,6 +2,7 @@
 package edu.moravian.model;
 
 import edu.moravian.view.SpriteRenderer;
+import edu.moravian.view.TowerRenderer;
 import java.util.ArrayList;
 import java.util.Collection;
 import org.newdawn.slick.Image;
@@ -14,13 +15,13 @@ public class TowerList {
     private Image towerEntity;
    
     
-    private SpriteRenderer  towerRenderer;
+    private TowerRenderer  towerRenderer;
     
     public TowerList() throws SlickException
     {
       towerMembers = new ArrayList<>();  
       towerEntity = new Image("res/steve.png");
-        towerRenderer = new SpriteRenderer(towerEntity);
+      towerRenderer = new TowerRenderer(towerEntity);
     }
     
     
@@ -32,7 +33,11 @@ public class TowerList {
     
     public void removeTower(Tower tower)
     {
-        towerMembers.remove(tower);
+        if(towerMembers.contains(tower))
+        {
+           int remove = towerMembers.indexOf(tower);
+            towerMembers.remove(remove);
+        }
     }
     
     public  Collection <Tower> getTowerMembers()
@@ -46,5 +51,20 @@ public class TowerList {
         for(int i=0; i<towerMembers.size();i++)
             towerMembers.get(i).update();
         
+    }
+    
+    public void redner()
+    {
+        for(int i=0; i<towerMembers.size();i++)
+         towerRenderer.update(tower);
+    }
+    
+    public int arraySize(){
+        return towerMembers.size();
+    }
+    
+    public Tower getTowerAt(int index)
+    {
+        return towerMembers.get(index);
     }
 }

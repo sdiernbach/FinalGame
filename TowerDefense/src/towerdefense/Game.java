@@ -17,6 +17,8 @@ import edu.moravian.view.MapRenderer;
 import edu.moravian.view.SpriteRenderer;
 import edu.moravian.model.Entity;
 import edu.moravian.model.TowerList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.newdawn.slick.BasicGame;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
@@ -120,6 +122,7 @@ public class Game extends BasicGame
         //enemyRenderer = new SpriteRenderer(enemyEntity);
         towerEntity = new Image("res/steve.png");
         towerRenderer = new SpriteRenderer(towerEntity);
+        towerList = new TowerList();
         
         
         healthPoints = 100;
@@ -139,7 +142,11 @@ public class Game extends BasicGame
         y=y/32;
         if(Dmap[x][y]==0)
         {
-            myMap.setTowerLocation(x, y);
+            try {
+                myMap.setTowerLocation(x, y);
+            } catch (SlickException ex) {
+                Logger.getLogger(Game.class.getName()).log(Level.SEVERE, null, ex);
+            }
             Dmap[x][y]=2;
             astar.printPath();
             
@@ -167,9 +174,10 @@ public class Game extends BasicGame
         y = mapRenderer.getY();
         
         //for tower no update needed yet
-        
+        //tower.update();
         towerList.update(delta);
-        towerRenderer.update(tower);
+        towerList.redner();
+//        towerRenderer.update(tower);
 
         
         //Enemies in array
@@ -227,6 +235,8 @@ public class Game extends BasicGame
             
         
          //towerRenderer.render(grphcs);
+        for(int i=0;i<towerList.arraySize();i++)
+            towerEntity.draw(towerList.getTowerAt(i).getEntityMX(), towerList.getTowerAt(i).getEntityMY());
          
      
         grphcs.drawString("Health Points: "+ healthPoints, 300, 50);
