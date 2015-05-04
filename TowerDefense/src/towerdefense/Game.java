@@ -16,6 +16,7 @@ import edu.moravian.model.Enemy;
 import edu.moravian.view.MapRenderer;
 import edu.moravian.view.SpriteRenderer;
 import edu.moravian.model.Entity;
+import edu.moravian.model.TowerList;
 import org.newdawn.slick.BasicGame;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
@@ -59,6 +60,7 @@ public class Game extends BasicGame
     public int healthPoints;
     private CoordinateTranslator ct;
     private SimpleFactory factory;
+    private TowerList towerList;
     
     private boolean exit, log, goRightKey, goLeftKey, goUpKey, goDownKey;
     private boolean Win, Lose;
@@ -87,7 +89,7 @@ public class Game extends BasicGame
         factory = new SimpleFactory(100);
         factory.getEnemies();
         factory.getEnemyRenderer();
-        tower = new Tower();
+        
         enemyEntity = new Image("res/Cool.png");
         enemyRenderer = new SpriteRenderer(enemyEntity);
         enemyLength=0;
@@ -166,7 +168,7 @@ public class Game extends BasicGame
         
         //for tower no update needed yet
         
-        tower.update();
+        towerList.update(delta);
         towerRenderer.update(tower);
 
         
@@ -184,6 +186,7 @@ public class Game extends BasicGame
            else
                timeSinceLastSpawn+=delta;
            factory.getEnemyRenderAt(enemyLength).update(factory.getEnemyAt(enemyLength));
+           
        //}
        
         

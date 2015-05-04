@@ -92,19 +92,20 @@ public class AreaMap {
                 Tower tower = null;
                 map.get(x).get(y).setStart(true);
             
-               // towerList.addTower(tower = new Tower(x,y));
+                towerList.addTower(tower = new Tower(x,y));
                 startLocationX = x;
                 startLocationY = y;
         }
         
         public void removeTowerLocation(int x, int y) {
-                
+                Tower tower = null;
+                towerList.removeTower(tower = new Tower(x,y));
                 map.get(x).get(y).setStart(false);
            
         }
 
         public void setGoalLocation(int x, int y) {
-                map.get(goalLocationX).get(goalLocationY).setGoal(false);
+               // map.get(goalLocationX).get(goalLocationY).setGoal(false);
                 map.get(x).get(y).setGoal(true);
                 goalLocationX = x;
                 goalLocationY = y;

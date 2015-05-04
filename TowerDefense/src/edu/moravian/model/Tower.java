@@ -8,16 +8,16 @@ import org.newdawn.slick.SlickException;
 import towerdefense.Game;
 
 
-public class Tower extends Entity {
+public class Tower {
     //private final Entity towerEntity;
-
-    public Tower()throws SlickException
+    int entityMX, entityMY;
+    public Tower(int x, int y)
     {  
-        entityMX=200;
-        entityMY=200;
+        entityMX=x;
+        entityMY=y;
     }
     
-    @Override
+   
     public void update() {
         try {
             for (int r=0; r<Game.getInstance().getWorldHeight(); r++) {
@@ -40,7 +40,7 @@ public class Tower extends Entity {
         }
     }
 
-    @Override
+  
     public void reset() {
        
     }

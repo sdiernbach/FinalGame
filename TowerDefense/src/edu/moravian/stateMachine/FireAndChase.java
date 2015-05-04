@@ -58,6 +58,8 @@ public class FireAndChase implements AgentState
         int agentMY = bulletEntity.getEntityMY();
         int playerMX = agentEntity.getEntityMX();
         int playerMY = agentEntity.getEntityMY();
+        int worldWidth = Game.getInstance().getWorldWidth();
+        int worldHeight = Game.getInstance().getWorldHeight();
         int delta = Game.getInstance().getDelta();
         if(playerMX != agentMX)
         {
